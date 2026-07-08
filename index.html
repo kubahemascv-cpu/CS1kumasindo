@@ -417,6 +417,9 @@ function vLaporan(){
     +'if(sh.getLastRow()==0)sh.appendRow(["Timestamp","Tanggal","Hari","Checklist%","Chat","FU H+1-7","FU Lama","FU Repeat","Status WA","Survey Jackpot","Survey Reko","Survey FU","Survey Repeat","Problem CS","Problem AI","Catatan"]);'
     +'var k=d.kpi||{};'
     +'sh.appendRow([ts,d.tanggal,d.hari,d.pct+"%",k.chat||0,k.fu_baru||0,k.fu_lama||0,k.fu_repeat||0,k.status_wa||0,k.survey_jackpot||0,k.survey_reko||0,k.survey_fu||0,k.survey_repeat||0,k.problem_cs||0,k.problem_ai||0,d.catatan||""]);'
+    +'var sh2=ss.getSheetByName("Catatan Checklist")||ss.insertSheet("Catatan Checklist");'
+    +'if(sh2.getLastRow()==0)sh2.appendRow(["Timestamp","Tanggal","Hari","No","Jam","Pilar","Aktivitas","Status","Catatan Task"]);'
+    +'if(d.tasks&&d.tasks.length){d.tasks.forEach(function(t){if(t.catatan||t.status!=="BELUM"){sh2.appendRow([ts,d.tanggal,d.hari,t.no,t.jam,t.pilar,t.aktivitas,t.status,t.catatan||""]);}});}' 
     +'return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);'
     +'}catch(ex){return ContentService.createTextOutput(JSON.stringify({ok:false,err:ex.toString()})).setMimeType(ContentService.MimeType.JSON);}}'
     +'</div>'
@@ -464,6 +467,9 @@ function doSync(isOverride){
   var payload={
     tanggal:TODAY, hari:TODAY_DAY, pct:pct,
     catatan:getCatatan(), kpi:kpiObj,
+    tasks:TASKS.map(function(t){
+      return {no:t.id, jam:t.jam, pilar:PILAR[t.pilar].lbl, aktivitas:t.act, status:getStatus(t.id), catatan:getNote(t.id)};
+    }),
   };
   var body='data='+encodeURIComponent(JSON.stringify(payload));
   try{
