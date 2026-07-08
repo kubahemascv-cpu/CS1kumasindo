@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>CS 1 Kumasindo — Faizal</title>
+<meta name="theme-color" id="tc" content="#1C1E26">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CS1 Kumasindo">
+<link rel="apple-touch-icon" id="touch-icon">
+<link rel="manifest" id="pwa-manifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAF8F6;--card:#FFFFFF;--card2:#FFF5EE;--bdr:#EDE0D4;
+  --txt:#1C1E26;--txt2:#40342A;--mut:#9A8070;
+  --or:#F05A1A;--or-d:#C43E08;--or-l:#FFF0E8;--or-b:#FFB899;
+  --ch:#1C1E26;
+  --grn:#16A34A;--grn-l:#F0FDF4;--grn-b:#BBF7D0;
+  --red:#DC2626;--red-l:#FEF2F2;--red-b:#FECACA;
+  --blu:#1877F2;--grn2:#25D366;
+  --shd:0 2px 10px rgba(0,0,0,.07);--ovl:rgba(0,0,0,.52);
+  --font:'Poppins',-apple-system,sans-serif;
+}
+body.dark{
+  --bg:#100E0C;--card:#1C1814;--card2:#261F18;--bdr:#342820;
+  --txt:#F5E8DC;--txt2:#C0A888;--mut:#6B5040;
+  --or:#FF7040;--or-d:#FF9060;--or-l:#2A1408;--or-b:#5A2A10;
+  --ch:#1C1E26;
+  --grn:#4ADE80;--grn-l:#0D2818;--grn-b:#14532D;
+  --red:#F87171;--red-l:#2A0808;--red-b:#7F1D1D;
+  --blu:#60A5FA;--grn2:#34D97B;
+  --shd:0 2px 10px rgba(0,0,0,.45);--ovl:rgba(0,0,0,.78);
+}
+body{font-family:var(--font);background:var(--bg);color:var(--txt);height:100dvh;display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;transition:background .3s,color .3s}
+
+/* TOPBAR */
+.topbar{flex-shrink:0;background:var(--ch);padding:11px 16px;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.32)}
+.topbar-row{display:flex;justify-content:space-between;align-items:center;max-width:680px;margin:0 auto}
+.brand-main{font-size:14px;font-weight:700;color:var(--or)}
+.brand-sub{font-size:10px;color:rgba(255,255,255,.38);font-weight:400;margin-top:1px}
+.icon-btn{width:34px;height:34px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.datebar{background:rgba(0,0,0,.3);padding:5px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+.datebar-inner{display:flex;justify-content:space-between;align-items:center;max-width:680px;margin:0 auto;font-size:11px;color:rgba(255,255,255,.42);font-weight:500}
+.hrs-badge{font-size:9px;color:rgba(255,255,255,.3);font-weight:500}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.inner{padding:14px 14px 22px;max-width:680px;margin:0 auto}
+.main::-webkit-scrollbar{width:3px}
+.main::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+
+/* BOTTOM NAV */
+.botnav{flex-shrink:0;background:var(--card);border-top:1px solid var(--bdr);display:flex;padding-bottom:env(safe-area-inset-bottom,0);transition:background .3s}
+.navbtn{flex:1;border:none;background:none;font-family:var(--font);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 0;cursor:pointer;color:var(--mut);font-size:9px;font-weight:500;transition:color .15s;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.navbtn.active{color:var(--or)}
+.navbtn svg{width:18px;height:18px}
+
+/* HERO */
+.prog-hero{background:var(--ch);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.prog-hero::after{content:'';position:absolute;top:-35%;right:-10%;width:150px;height:150px;background:rgba(240,90,26,.08);border-radius:50%}
+.ph-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;position:relative;z-index:1}
+.ph-title{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em}
+.ph-score{font-size:13px;font-weight:700;color:var(--or)}
+.ph-track{background:rgba(255,255,255,.1);border-radius:99px;height:6px;overflow:hidden}
+.ph-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--or),#FFA060);transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* TASK CARD */
+.task-card{background:var(--card);border-radius:12px;margin-bottom:8px;box-shadow:var(--shd);overflow:hidden;border-left:3px solid var(--bdr);transition:background .3s}
+.task-card.st-selesai{border-left-color:var(--grn);opacity:.84}
+.task-meta{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--bdr)}
+.task-num{width:20px;height:20px;border-radius:6px;background:var(--card2);font-size:10px;font-weight:700;color:var(--mut);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.task-time{font-size:10px;color:var(--mut);font-weight:500;flex-shrink:0}
+.pilar-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.pasca-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--or-l);color:var(--or-d);border:1px solid var(--or-b)}
+.task-body{padding:9px 12px;border-bottom:1px solid var(--bdr)}
+.task-act{font-size:12.5px;font-weight:500;color:var(--txt);line-height:1.55}
+.task-act.done{text-decoration:line-through;color:var(--mut)}
+.task-footer{display:flex;align-items:center;gap:7px;padding:7px 12px}
+.st-badge{font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;border:none;cursor:pointer;font-family:var(--font);transition:all .15s;-webkit-tap-highlight-color:transparent;flex-shrink:0}
+.st-belum{background:var(--card2);color:var(--mut);border:1.5px solid var(--bdr)}
+.st-selesai-b{background:var(--grn-l);color:var(--grn);border:1.5px solid var(--grn-b)}
+.st-kendala{background:var(--red-l);color:var(--red);border:1.5px solid var(--red-b)}
+.note-preview{flex:1;font-size:10.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--bdr);background:var(--card2);color:var(--mut);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.note-btn.has{border-color:var(--or-b);background:var(--or-l);color:var(--or-d)}
+
+/* BANNERS */
+.save-banner{background:var(--grn-l);border:1px solid var(--grn-b);color:var(--grn);border-radius:12px;padding:14px;margin-bottom:10px;text-align:center}
+.save-banner .sb-title{font-size:14px;font-weight:700}
+.save-banner .sb-sub{font-size:11.5px;margin-top:3px;opacity:.85}
+.warn-banner{background:var(--or-l);border:1px solid var(--or-b);color:var(--or-d);border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:12px;line-height:1.6}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 16px;border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.btn-pri{background:var(--or);color:#fff}
+.btn-dark{background:var(--ch);color:#fff}
+.btn-out{background:none;border:1.5px solid var(--bdr);color:var(--txt2)}
+.btn-red{background:var(--red-l);color:var(--red);border:1.5px solid var(--red-b)}
+.btn-block{width:100%}
+.btn-sm{padding:7px 12px;font-size:11.5px;border-radius:8px}
+
+/* KPI TAB */
+.kpi-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.ksum-item{background:var(--card);border-radius:11px;padding:10px 6px;box-shadow:var(--shd);text-align:center}
+.ksum-val{font-size:28px;font-weight:700;line-height:1.1}
+.ksum-lbl{font-size:9px;color:var(--mut);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+
+.kpi-group{background:var(--card);border-radius:12px;margin-bottom:10px;box-shadow:var(--shd);overflow:hidden}
+.kgrp-hd{display:flex;align-items:center;gap:8px;padding:10px 13px;border-bottom:1px solid var(--bdr)}
+.kgrp-ico{font-size:15px;flex-shrink:0}
+.kgrp-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.kpi-field{padding:10px 13px;border-bottom:1px solid var(--bdr)}
+.kpi-field:last-child{border-bottom:none}
+.kfi-lbl{font-size:12px;font-weight:500;color:var(--txt);margin-bottom:6px;line-height:1.4;display:block}
+.finp-kpi{width:100%;padding:8px 11px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:14px;font-weight:600;color:var(--txt);background:var(--card2);outline:none;-webkit-appearance:none;transition:border-color .15s}
+.finp-kpi:focus{border-color:var(--or);background:var(--card)}
+
+/* LAPORAN TAB */
+.slbl{font-size:10.5px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.09em;padding:14px 2px 8px;display:block}
+.finp{width:100%;padding:9px 11px;border:1.5px solid var(--bdr);border-radius:9px;font-family:var(--font);font-size:13px;color:var(--txt);background:var(--card2);outline:none;transition:border-color .15s;-webkit-appearance:none}
+.finp:focus{border-color:var(--or);background:var(--card)}
+.ftarea{resize:vertical;min-height:80px;line-height:1.55}
+.info-card{background:var(--card);border-radius:12px;padding:13px;margin-bottom:10px;box-shadow:var(--shd)}
+.info-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);margin-bottom:8px}
+.riwayat-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bdr);font-size:12px}
+.riwayat-row:last-child{border-bottom:none}
+.riwayat-date{font-weight:600;color:var(--txt);min-width:86px}
+.riwayat-day{color:var(--mut);min-width:48px}
+.rw-bar{flex:1;background:var(--bdr);border-radius:99px;height:6px;overflow:hidden}
+.rw-fill{height:100%;border-radius:99px;background:var(--or)}
+.riwayat-pct{font-weight:700;color:var(--or);min-width:36px;text-align:right}
+.gs-status{font-size:11.5px;margin-top:8px;min-height:18px;line-height:1.5}
+.code-block{background:var(--card2);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;font-size:10px;color:var(--mut);line-height:1.7;overflow-x:auto;margin-top:8px;white-space:pre;font-family:monospace}
+.code-block::-webkit-scrollbar{height:3px}
+.code-block::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+.fg{margin-bottom:10px}
+.fg:last-child{margin-bottom:0}
+.flbl{font-size:11px;font-weight:600;color:var(--mut);display:block;margin-bottom:5px}
+
+/* MODAL */
+.modal-ovl{display:none;position:fixed;inset:0;background:var(--ovl);z-index:200;align-items:flex-end;justify-content:center}
+.modal-ovl.show{display:flex}
+.modal-sheet{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:85vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);transition:background .3s}
+.modal-handle{width:40px;height:4px;background:var(--bdr);border-radius:2px;margin:12px auto 0}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bdr)}
+.modal-title{font-size:14px;font-weight:700}
+.modal-close{width:28px;height:28px;border-radius:14px;border:none;background:var(--card2);color:var(--txt2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:14px 16px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-row">
+    <div>
+      <div class="brand-main">&#9673; CS 1 Kumasindo &mdash; Faizal</div>
+      <div class="brand-sub">Daily Checklist &amp; KPI</div>
+    </div>
+    <button class="icon-btn" id="theme-btn">
+      <svg id="theme-ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.79"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+</header>
+<div class="datebar">
+  <div class="datebar-inner">
+    <span id="date-display"></span>
+    <span class="hrs-badge">08:00 &ndash; 16:30</span>
+  </div>
+</div>
+
+<main class="main" id="main-scroll">
+  <div class="inner" id="content"></div>
+</main>
+
+<nav class="botnav">
+  <button class="navbtn active" data-nav="checklist">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Checklist
+  </button>
+  <button class="navbtn" data-nav="kpi">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    KPI
+  </button>
+  <button class="navbtn" data-nav="laporan">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Laporan
+  </button>
+</nav>
+
+<div class="modal-ovl" id="modal-ovl">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// HELPERS
+var toDateKey = function(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+var fromKey = function(s){ return new Date(s+'T00:00:00'); };
+var addD = function(d,n){ var x=new Date(d); x.setDate(x.getDate()+n); return x; };
+var esc = function(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+var NOW = new Date();
+var TODAY = toDateKey(NOW);
+var DAYS_ID = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+var TODAY_DAY = DAYS_ID[NOW.getDay()];
+var DATE_FMT = NOW.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// PILAR CONFIG
+var PILAR = {
+  chat:   {lbl:'Chat',       color:'#1877F2'},
+  wa:     {lbl:'WA Status',  color:'#25D366'},
+  cs:     {lbl:'CS Toko',    color:'#F05A1A'},
+  fu:     {lbl:'Follow Up',  color:'#7C3AED'},
+  ai:     {lbl:'Agen AI',    color:'#0D9488'},
+};
+
+// TASKS
+var TASKS = [
+  {id:1, jam:'08:00', pilar:'chat', act:'Jawab Chat di Mekari & HP CS \u2014 buka semua platform, respons chat yang masuk'},
+  {id:2, jam:'08:20', pilar:'wa',   act:'Upload Status WA'},
+  {id:3, jam:'09:00', pilar:'cs',   act:'Klasifikasi Konsumen dari chat pagi'},
+  {id:4, jam:'09:30', pilar:'fu',   act:'Follow Up Konsumen H+1 s/d H+7'},
+  {id:5, jam:'11:00', pilar:'fu',   act:'Follow Up Konsumen Lama'},
+  {id:6, jam:'13:00', pilar:'fu',   act:'Follow Up Repeat Order'},
+  {id:7, jam:'15:00', pilar:'ai',   act:'Catat Problem Monitoring Agen AI WA Business'},
+  {id:8, jam:'15:30', pilar:'cs',   act:'Catat Problem di CS Toko'},
+];
+
+// KPI GROUPS
+var KPI_GROUPS = [
+  { id:'chat_fu', title:'Chat & Follow Up', ico:'&#128172;', color:'#1877F2', fields:[
+    {id:'chat',      lbl:'Jumlah Chatting Hari Ini (selain Follow Up)'},
+    {id:'fu_baru',   lbl:'Jumlah Follow Up H+1 s/d H+7'},
+    {id:'fu_lama',   lbl:'Jumlah Follow Up Konsumen Lama'},
+    {id:'fu_repeat', lbl:'Jumlah Follow Up Repeat Order'},
+  ]},
+  { id:'wa_status', title:'Status WA', ico:'&#128241;', color:'#25D366', fields:[
+    {id:'status_wa', lbl:'Jumlah Status WA yang Dipost'},
+  ]},
+  { id:'survey', title:'Survey', ico:'&#128203;', color:'#F05A1A', fields:[
+    {id:'survey_jackpot', lbl:'Survey dari Jackpot'},
+    {id:'survey_reko',    lbl:'Survey dari Rekomendasi'},
+    {id:'survey_fu',      lbl:'Survey dari Follow Up'},
+    {id:'survey_repeat',  lbl:'Survey dari Repeat Order'},
+  ]},
+  { id:'problem', title:'Problem', ico:'&#9888;&#65039;', color:'#DC2626', fields:[
+    {id:'problem_cs', lbl:'Jumlah Problem di CS Toko'},
+    {id:'problem_ai', lbl:'Jumlah Problem Monitoring Agen AI WA Business'},
+  ]},
+];
+
+// STORAGE
+var loadDay = function(d){ try{return JSON.parse(localStorage.getItem('ku_d_'+d)||'{}')}catch(e){return{}} };
+var saveDay = function(d,v){ localStorage.setItem('ku_d_'+d, JSON.stringify(v)); };
+var getCFG  = function(){ try{return JSON.parse(localStorage.getItem('ku_cfg')||'{}')}catch(e){return{}} };
+var saveCFG = function(v){ localStorage.setItem('ku_cfg', JSON.stringify(v)); };
+
+var getTd      = function(){ return loadDay(TODAY); };
+var getStatus  = function(id){ var d=getTd(); return (d.tasks&&d.tasks[id]&&d.tasks[id].status)||'BELUM'; };
+var getNote    = function(id){ var d=getTd(); return (d.tasks&&d.tasks[id]&&d.tasks[id].note)||''; };
+var setStatus  = function(id,val){ var d=getTd(); if(!d.tasks)d.tasks={}; if(!d.tasks[id])d.tasks[id]={}; d.tasks[id].status=val; saveDay(TODAY,d); };
+var setNote    = function(id,val){ var d=getTd(); if(!d.tasks)d.tasks={}; if(!d.tasks[id])d.tasks[id]={}; d.tasks[id].note=val; saveDay(TODAY,d); };
+var getKPI     = function(f){ var d=getTd(); return (d.kpi&&d.kpi[f]!==undefined)?d.kpi[f]:''; };
+var setKPI     = function(f,v){ var d=getTd(); if(!d.kpi)d.kpi={}; d.kpi[f]=v; saveDay(TODAY,d); };
+var getCatatan = function(){ return getTd().catatan||''; };
+var setCatatan = function(v){ var d=getTd(); d.catatan=v; saveDay(TODAY,d); };
+
+// CALCULATIONS
+var calcDone = function(){
+  var d=getTd(), done=0;
+  TASKS.forEach(function(t){ if(d.tasks&&d.tasks[t.id]&&d.tasks[t.id].status==='SELESAI') done++; });
+  return done;
+};
+var dayPct = function(dk){
+  var d=loadDay(dk); if(!d.tasks) return 0;
+  var done=0;
+  TASKS.forEach(function(t){ if(d.tasks&&d.tasks[t.id]&&d.tasks[t.id].status==='SELESAI') done++; });
+  return Math.round(done/TASKS.length*100);
+};
+var kpiTotal = function(fields){
+  return fields.reduce(function(s,f){ return s+(+getKPI(f.id)||0); },0);
+};
+
+// STATE
+var ST = { tab:'checklist' };
+
+// VIEW: CHECKLIST
+function vChecklist(){
+  var done=calcDone(), total=TASKS.length, pct=Math.round(done/total*100);
+  var d=getTd();
+  var CYCLE={BELUM:'SELESAI',SELESAI:'KENDALA',KENDALA:'BELUM'};
+  var ST_LBL={BELUM:'&#9679; Belum',SELESAI:'&#10003; Selesai',KENDALA:'&#9888; Kendala'};
+  var ST_CLS={BELUM:'st-belum',SELESAI:'st-selesai-b',KENDALA:'st-kendala'};
+
+  var h='<div class="prog-hero">'
+    +'<div class="ph-row"><div class="ph-title">Checklist Hari Ini</div><div class="ph-score">'+done+'/'+total+' &middot; '+pct+'%</div></div>'
+    +'<div class="ph-track"><div class="ph-fill" style="width:'+pct+'%"></div></div>'
+    +'</div>';
+
+  if(d.finalized){
+    h+='<div class="save-banner"><div class="sb-title">&#10003; Checklist Tersimpan</div>'
+      +'<div class="sb-sub">Skor akhir: '+done+'/'+total+' ('+pct+'%)</div></div>';
+  }
+
+  TASKS.forEach(function(t){
+    var st=getStatus(t.id), note=getNote(t.id);
+    var pc=PILAR[t.pilar];
+    var isPasca = t.jam.indexOf('16')===0;
+    h+='<div class="task-card '+(st==='SELESAI'?'st-selesai':'')+'">'
+      +'<div class="task-meta">'
+      +'<div class="task-num">'+t.id+'</div>'
+      +'<div class="task-time">&#9200; '+t.jam+'</div>'
+      +'<span class="pilar-badge" style="color:'+pc.color+';background:'+pc.color+'18;border:1px solid '+pc.color+'35">'+pc.lbl+'</span>'
+      +(isPasca?'<span class="pasca-pill">Pasca Kerja</span>':'')
+      +'</div>'
+      +'<div class="task-body"><div class="task-act '+(st==='SELESAI'?'done':'')+'" >'+t.act+'</div></div>'
+      +'<div class="task-footer">'
+      +'<button class="st-badge '+ST_CLS[st]+'" data-cy="'+t.id+'" data-next="'+CYCLE[st]+'">'+ST_LBL[st]+'</button>'
+      +'<div class="note-preview">'+(note?'&#128221; '+esc(note):'')+'</div>'
+      +'<button class="note-btn '+(note?'has':'')+'" data-nt="'+t.id+'">&#128221;</button>'
+      +'</div></div>';
+  });
+
+  h+='<button class="btn btn-pri btn-block" id="btn-save" style="margin-top:6px">&#128190; Simpan Hari Ini</button>';
+  h+='<div style="padding:10px 2px 2px;font-size:11px;color:var(--mut);line-height:1.6">Pasca kerja 16:00&ndash;16:30: pastikan semua chat sudah terrespons sebelum tutup.</div>';
+  return h;
+}
+
+// VIEW: KPI
+function vKPI(){
+  var chat=+getKPI('chat')||0;
+  var fuB=+getKPI('fu_baru')||0, fuL=+getKPI('fu_lama')||0, fuR=+getKPI('fu_repeat')||0;
+  var totalFU=fuB+fuL+fuR;
+  var svJ=+getKPI('survey_jackpot')||0, svRk=+getKPI('survey_reko')||0;
+  var svF=+getKPI('survey_fu')||0, svRp=+getKPI('survey_repeat')||0;
+  var totalSv=svJ+svRk+svF+svRp;
+  var prC=+getKPI('problem_cs')||0, prA=+getKPI('problem_ai')||0;
+  var totalPr=prC+prA;
+
+  var h='<div class="kpi-summary">'
+    +'<div class="ksum-item"><div class="ksum-val" style="color:'+PILAR.chat.color+'">'+chat+'</div><div class="ksum-lbl">Chat</div></div>'
+    +'<div class="ksum-item"><div class="ksum-val" style="color:'+PILAR.fu.color+'">'+totalFU+'</div><div class="ksum-lbl">Follow Up</div></div>'
+    +'<div class="ksum-item"><div class="ksum-val" style="color:var(--or)">'+totalSv+'</div><div class="ksum-lbl">Survey</div></div>'
+    +'<div class="ksum-item"><div class="ksum-val" style="color:var(--red)">'+totalPr+'</div><div class="ksum-lbl">Problem</div></div>'
+    +'</div>';
+
+  KPI_GROUPS.forEach(function(grp){
+    var fields=grp.fields.map(function(f){
+      var val=getKPI(f.id);
+      return '<div class="kpi-field">'
+        +'<label class="kfi-lbl" for="kpi_'+f.id+'">'+f.lbl+'</label>'
+        +'<input class="finp-kpi" id="kpi_'+f.id+'" type="number" inputmode="numeric" min="0" placeholder="0" value="'+esc(val)+'" data-kpi="'+f.id+'">'
+        +'</div>';
+    }).join('');
+    h+='<div class="kpi-group">'
+      +'<div class="kgrp-hd" style="color:'+grp.color+';">'
+      +'<span class="kgrp-ico">'+grp.ico+'</span>'
+      +'<span class="kgrp-title">'+grp.title+'</span>'
+      +'</div>'
+      +fields
+      +'</div>';
+  });
+
+  h+='<div style="padding:4px 2px 2px;font-size:11px;color:var(--mut);line-height:1.6">Data tersimpan otomatis. Dikirim ke Google Sheets saat klik Kirim Laporan di tab Laporan.</div>';
+  return h;
+}
+
+// VIEW: LAPORAN
+function vLaporan(){
+  var cfg=getCFG(), catatan=getCatatan();
+  var d=getTd();
+  var alreadySent=!!(d.gs_sent);
+  var done=calcDone(), pct=Math.round(done/TASKS.length*100);
+
+  var h='<span class="slbl">Catatan Harian</span>'
+    +'<div class="info-card"><div class="fg">'
+    +'<textarea class="finp ftarea" id="catatan-input" placeholder="Catatan bebas hari ini \u2014 highlight, kendala, eskalasi...">'+esc(catatan)+'</textarea>'
+    +'</div></div>';
+
+  // Riwayat 7 hari
+  h+='<span class="slbl">Riwayat 7 Hari</span><div class="info-card">';
+  for(var i=6;i>=0;i--){
+    var day=addD(NOW,-i), dk=toDateKey(day);
+    var dp=dayPct(dk), isToday=dk===TODAY;
+    h+='<div class="riwayat-row">'
+      +'<span class="riwayat-date" style="'+(isToday?'color:var(--or);font-weight:700':'')+'">'+dk.slice(5)+(isToday?' \u2014 Hari ini':'')+'</span>'
+      +'<span class="riwayat-day">'+DAYS_ID[day.getDay()]+'</span>'
+      +'<div class="rw-bar"><div class="rw-fill" style="width:'+dp+'%"></div></div>'
+      +'<span class="riwayat-pct">'+dp+'%</span>'
+      +'</div>';
+  }
+  h+='</div>';
+
+  // GSheets sync — double input guard
+  h+='<span class="slbl">Kirim ke Google Sheets</span><div class="info-card">';
+  if(alreadySent){
+    h+='<div class="warn-banner">&#9888; Data hari ini sudah dikirim ke Google Sheets'+(d.gs_sent_at?' pada '+d.gs_sent_at:'')+'. Mengirim ulang akan membuat baris duplikat di Sheets.</div>'
+      +'<button class="btn btn-red btn-block" id="btn-sync-override" style="margin-bottom:8px">&#128257; Kirim Ulang (Override)</button>';
+  } else {
+    h+='<div class="fg"><label class="flbl">URL Apps Script (/exec)</label>'
+      +'<input class="finp" type="url" id="gs-url" placeholder="https://script.google.com/macros/s/..." value="'+esc(cfg.gsUrl||'')+'"></div>'
+      +'<button class="btn btn-dark btn-block" id="btn-sync">&#128228; Kirim Laporan Hari Ini</button>';
+  }
+  h+='<div class="gs-status" id="sync-st"></div>'
+    +'<div class="info-hd" style="margin-top:14px">Apps Script (paste di editor Google Sheet)</div>'
+    +'<div class="code-block" id="gs-code">function doPost(e){try{'
+    +'var raw=e.parameter&&e.parameter.data?e.parameter.data:(e.postData&&e.postData.contents?e.postData.contents:"{}");'
+    +'var d=JSON.parse(raw);'
+    +'var ss=SpreadsheetApp.getActiveSpreadsheet();'
+    +'var ts=Utilities.formatDate(new Date(),"Asia/Jakarta","dd/MM/yyyy HH:mm");'
+    +'var sh=ss.getSheetByName("Log Faizal CS1")||ss.insertSheet("Log Faizal CS1");'
+    +'if(sh.getLastRow()==0)sh.appendRow(["Timestamp","Tanggal","Hari","Checklist%","Chat","FU H+1-7","FU Lama","FU Repeat","Status WA","Survey Jackpot","Survey Reko","Survey FU","Survey Repeat","Problem CS","Problem AI","Catatan"]);'
+    +'var k=d.kpi||{};'
+    +'sh.appendRow([ts,d.tanggal,d.hari,d.pct+"%",k.chat||0,k.fu_baru||0,k.fu_lama||0,k.fu_repeat||0,k.status_wa||0,k.survey_jackpot||0,k.survey_reko||0,k.survey_fu||0,k.survey_repeat||0,k.problem_cs||0,k.problem_ai||0,d.catatan||""]);'
+    +'return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);'
+    +'}catch(ex){return ContentService.createTextOutput(JSON.stringify({ok:false,err:ex.toString()})).setMimeType(ContentService.MimeType.JSON);}}'
+    +'</div>'
+    +'<button class="btn btn-out btn-block btn-sm" id="btn-copy-script" style="margin-top:8px">&#128203; Copy Kode Script</button>'
+    +'</div>';
+
+  return h;
+}
+
+// MODALS
+function openModal(html){ document.getElementById('modal-content').innerHTML=html; document.getElementById('modal-ovl').classList.add('show'); }
+function closeModal(){ document.getElementById('modal-ovl').classList.remove('show'); }
+
+function mNote(id){
+  var t=TASKS.find(function(x){return x.id===id;});
+  var note=getNote(id);
+  return '<div class="modal-hd">'
+    +'<div><div class="modal-title">Catatan Task '+id+'</div>'
+    +'<div style="font-size:10px;color:var(--mut);margin-top:2px">'+esc(t.act.split('\u2014')[0].trim())+'</div></div>'
+    +'<button class="modal-close" id="mc-close">&times;</button></div>'
+    +'<div class="modal-body">'
+    +'<div class="fg"><label class="flbl">Catatan / Kendala</label>'
+    +'<textarea class="finp ftarea" id="note-input" placeholder="Tulis catatan atau kendala untuk task ini...">'+esc(note)+'</textarea></div>'
+    +'<button class="btn btn-pri btn-block" data-save-note="'+id+'">Simpan Catatan</button>'
+    +'</div>';
+}
+
+// SYNC
+function doSync(isOverride){
+  var cfg=getCFG();
+  var url=cfg.gsUrl;
+  // If override, re-read URL from input if present
+  var urlEl=document.getElementById('gs-url');
+  if(urlEl && urlEl.value.trim()) url=urlEl.value.trim();
+  var st=document.getElementById('sync-st');
+  if(!url){ if(st){st.textContent='Masukkan URL Apps Script terlebih dahulu.';st.style.color='var(--red)';} return; }
+  cfg.gsUrl=url; saveCFG(cfg);
+  if(st){st.textContent='Mengirim data...';st.style.color='var(--mut)';}
+
+  var done=calcDone(), pct=Math.round(done/TASKS.length*100);
+  var kpiObj={};
+  KPI_GROUPS.forEach(function(grp){
+    grp.fields.forEach(function(f){ kpiObj[f.id]=+getKPI(f.id)||0; });
+  });
+  var payload={
+    tanggal:TODAY, hari:TODAY_DAY, pct:pct,
+    catatan:getCatatan(), kpi:kpiObj,
+  };
+  var body='data='+encodeURIComponent(JSON.stringify(payload));
+  try{
+    var xhr=new XMLHttpRequest();
+    xhr.open('POST',url,true);
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    xhr.onload=xhr.onerror=function(){
+      var now=new Date();
+      var sentAt=now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+      var d=getTd(); d.gs_sent=true; d.gs_sent_at=sentAt; saveDay(TODAY,d);
+      if(st){st.textContent='&#10003; Laporan berhasil dikirim ke Google Sheets!';st.style.color='var(--grn)';}
+      setTimeout(function(){ render(true); },1200);
+    };
+    xhr.ontimeout=function(){ if(st){st.textContent='Timeout \u2014 cek koneksi dan coba lagi.';st.style.color='var(--red)';} };
+    xhr.timeout=15000;
+    xhr.send(body);
+  }catch(err){
+    var d2=getTd(); d2.gs_sent=true; saveDay(TODAY,d2);
+    if(st){st.textContent='Permintaan terkirim. Cek Google Sheets Anda.';st.style.color='var(--grn)';}
+    setTimeout(function(){ render(true); },1200);
+  }
+}
+
+// RENDER
+function render(keepScroll){
+  var ms=document.getElementById('main-scroll');
+  var sp=keepScroll?ms.scrollTop:0;
+  document.getElementById('date-display').textContent=DATE_FMT;
+  document.querySelectorAll('.navbtn').forEach(function(b){
+    b.classList.toggle('active',b.dataset.nav===ST.tab);
+  });
+  var c=document.getElementById('content');
+  if(ST.tab==='checklist') c.innerHTML=vChecklist();
+  if(ST.tab==='kpi')       c.innerHTML=vKPI();
+  if(ST.tab==='laporan')   c.innerHTML=vLaporan();
+  ms.scrollTop=sp;
+}
+
+// EVENTS
+document.addEventListener('click',function(e){
+  // Nav
+  var nav=e.target.closest('.navbtn');
+  if(nav){ ST.tab=nav.dataset.nav; render(); return; }
+
+  // Theme
+  if(e.target.closest('#theme-btn')){ toggleTheme(); return; }
+
+  // Modal close
+  if(e.target.closest('#mc-close')||e.target===document.getElementById('modal-ovl')){ closeModal(); return; }
+
+  // Status cycle
+  var cy=e.target.closest('[data-cy]');
+  if(cy){ setStatus(parseInt(cy.dataset.cy),cy.dataset.next); render(true); return; }
+
+  // Note open
+  var nt=e.target.closest('[data-nt]');
+  if(nt){ openModal(mNote(parseInt(nt.dataset.nt))); return; }
+
+  // Note save
+  var sn=e.target.closest('[data-save-note]');
+  if(sn){
+    var inp=document.getElementById('note-input');
+    if(inp) setNote(parseInt(sn.dataset.saveNote),inp.value.trim());
+    closeModal(); render(true); return;
+  }
+
+  // Save day
+  if(e.target.closest('#btn-save')){
+    var d=getTd(); d.finalized=true; saveDay(TODAY,d); render(true); return;
+  }
+
+  // Sync (first time)
+  if(e.target.closest('#btn-sync')){
+    var urlEl=document.getElementById('gs-url');
+    if(urlEl){ var cfg=getCFG(); cfg.gsUrl=urlEl.value.trim(); saveCFG(cfg); }
+    doSync(false); return;
+  }
+
+  // Sync override
+  if(e.target.closest('#btn-sync-override')){
+    if(confirm('Kirim ulang data hari ini? Data akan ditambahkan sebagai baris baru di Google Sheets.')){
+      doSync(true);
+    }
+    return;
+  }
+
+  // Copy script
+  if(e.target.closest('#btn-copy-script')){
+    var el=document.getElementById('gs-code');
+    if(el&&navigator.clipboard) navigator.clipboard.writeText(el.textContent);
+    var btn=e.target.closest('#btn-copy-script');
+    btn.innerHTML='&#10003; Tersalin!';
+    setTimeout(function(){ btn.innerHTML='&#128203; Copy Kode Script'; },2000);
+    return;
+  }
+});
+
+// Input: no re-render to keep keyboard focus
+document.addEventListener('input',function(e){
+  if(e.target.id==='catatan-input'){ setCatatan(e.target.value); return; }
+  if(e.target.id==='gs-url'){
+    var cfg=getCFG(); cfg.gsUrl=e.target.value.trim(); saveCFG(cfg); return;
+  }
+  var kf=e.target.closest('[data-kpi]');
+  if(kf){ setKPI(kf.dataset.kpi,kf.value); return; }
+});
+
+// THEME
+function toggleTheme(){
+  var dark=document.body.classList.toggle('dark');
+  localStorage.setItem('ku_theme',dark?'dark':'light');
+  document.getElementById('tc').content=dark?'#100E0C':'#1C1E26';
+  updateThemeIco(dark);
+}
+function updateThemeIco(dark){
+  var ico=document.getElementById('theme-ico'); if(!ico)return;
+  ico.innerHTML=dark
+    ?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    :'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.79"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+
+// PWA ICON — Orange Kumasindo
+var ICON='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
+  +'<defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF8040"/><stop offset="100%" stop-color="#C43A00"/></linearGradient></defs>'
+  +'<rect width="512" height="512" rx="115" fill="url(#g)"/>'
+  +'<text x="256" y="360" font-family="Arial Black,Arial,sans-serif" font-size="280" font-weight="900" fill="white" text-anchor="middle">F</text>'
+  +'</svg>';
+var ICON_URI='data:image/svg+xml;base64,'+btoa(ICON);
+var tl=document.getElementById('touch-icon'); if(tl)tl.href=ICON_URI;
+try{
+  var m={name:'CS 1 Kumasindo \u2014 Faizal',short_name:'CS1 Faizal',description:'Daily Checklist CS 1 Kumasindo',start_url:'./',display:'standalone',orientation:'portrait',background_color:'#FAF8F6',theme_color:'#1C1E26',icons:[{src:ICON_URI,sizes:'512x512',type:'image/svg+xml',purpose:'any maskable'}]};
+  var bl=new Blob([JSON.stringify(m)],{type:'application/json'});
+  document.getElementById('pwa-manifest').href=URL.createObjectURL(bl);
+}catch(e){}
+
+// INIT
+var th=localStorage.getItem('ku_theme');
+if(th==='dark'){ document.body.classList.add('dark'); document.getElementById('tc').content='#100E0C'; updateThemeIco(true); }
+render();
+</script>
+</body>
+</html>
